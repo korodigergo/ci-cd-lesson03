@@ -1,7 +1,7 @@
-import { list, formatList, format, add, complete } from "./todo.js";
+import { list, formatList, format, add, complete, findById } from "./todo.js";
 import { display } from "./display.js";
 import { AppError } from "./app-error.js";
-import { validateAddParams, validateCompleteParams } from "./validate.js";
+import { validateAddParams, validateCompleteParams, validateFindByIdParams } from "./validate.js";
 
 export function createApp(todoStore, args) {
   const [, , command, ...params] = args;
@@ -23,6 +23,12 @@ export function createApp(todoStore, args) {
       validated = validateCompleteParams(params);
       const completed = complete(todoStore, validated);
       display(["Todo complition changed:", format(completed)]);
+      break;
+
+    case "find-by-id":
+      validated = validateFindByIdParams(params);
+      const findId = findById(todoStore, validated);
+      display(["The searched ID:", format(findId)]);
       break;
 
     default:

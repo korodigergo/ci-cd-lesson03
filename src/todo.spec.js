@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { add, format, formatList, list } from './todo.js';
+import { add, findById, format, formatList, list } from './todo.js';
 
 function createMockStore(data) {
   return {
@@ -135,6 +135,28 @@ describe('add', () => {
   });
 });
 
+describe('find-by-id', () => {
+  it('should list the todo if found it by id', () => {
+    const mockStore = createMockStore([
+      { id: 1, title: 'Todo 1', done: false }
+    ])
+    const expected = 
+      { id: 1, title: 'Todo 1', done: false }
+    ;
 
+    const current = findById(mockStore, 1);
+
+    expect(current).toStrictEqual(expected);
+  })
+
+  it('should return an empty list, if nothing is stored', () => {
+    const mockStore = createMockStore([])
+    const expected = undefined;
+
+    const current = findById(mockStore, 1);
+
+    expect(current).toStrictEqual(expected);
+  })
+})
 
 
