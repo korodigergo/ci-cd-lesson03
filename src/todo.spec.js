@@ -149,7 +149,7 @@ describe('find-by-id', () => {
     expect(current).toStrictEqual(expected);
   })
 
-  it('should return an empty list, if nothing is stored', () => {
+  it('should return undefined if todo list is empty', () => {
     const mockStore = createMockStore([])
     const expected = undefined;
 
