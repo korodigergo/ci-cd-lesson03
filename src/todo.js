@@ -31,3 +31,20 @@ export function add(store, params) {
   store.set(toStore)
   return newTodo;
 }
+
+export function complete(store, params){
+  const id = +params;
+  const todos = store.get()
+  let changedTodo
+  
+  for (const todo of todos) {
+    if (todo.id === id) {
+      changedTodo = todo
+      todo.done = todo.done ? false : true; 
+      break;
+    }
+  }
+
+  store.set(todos)
+  return changedTodo;
+}

@@ -10,3 +10,7 @@ export function validateAddParams(params) {
   }
   return params;
 }
+
+export function validateCompleteParams(params){
+  return params
+}
