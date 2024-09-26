@@ -22,7 +22,7 @@ export function createApp(todoStore, args) {
     case "complete":
       validated = validateCompleteParams(params);
       const completed = complete(todoStore, validated);
-      display(["Todo complition changed:", format(completed)]);
+      display(["Todo set to completed:", format(completed)]);
       break;
 
     default:

@@ -12,5 +12,11 @@ export function validateAddParams(params) {
 }
 
 export function validateCompleteParams(params){
-  return params
+  if(isNaN(+params)) {
+    throw new AppError('Give a thing is NaN.');
+  }
+  if(+params <= 0) {
+    throw new AppError('Give a number needs to be biger than 0.');
+  }
+  return params;
 }

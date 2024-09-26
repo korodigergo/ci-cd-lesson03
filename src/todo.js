@@ -40,7 +40,7 @@ export function complete(store, params){
   for (const todo of todos) {
     if (todo.id === id) {
       changedTodo = todo
-      todo.done = todo.done ? false : true; 
+      todo.done = true; 
       break;
     }
   }
