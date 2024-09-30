@@ -63,4 +63,25 @@ export function findByStatus(store, param) {
       `This is not a valid param: "${param}". Try to use "done" or "not-done".`
     );
   }
+} 
+export function findById(store, params){
+  const id = +params;
+  const todos = store.get()
+  for(const todo of todos){
+    if(todo.id === id){
+      return todo;
+    }
+  }
+}
+
+export function findByTitle(store, params){
+  const foundTodos = [];
+  const [title] = params;
+  const todos = store.get()
+  for(const todo of todos){
+    if(todo.title.toLowerCase().includes(title.toLowerCase()) ){
+      foundTodos.push(todo);
+    }
+  }
+  return foundTodos;
 }

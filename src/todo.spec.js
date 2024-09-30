@@ -1,5 +1,5 @@
-import { jest } from "@jest/globals";
-import { add, complete, format, formatList, list,findByStatus } from "./todo.js";
+import { jest } from '@jest/globals';
+import { add, findById, findByTitle, format, formatList, list, complete, findByStatus } from './todo.js';
 
 function createMockStore(data) {
   return {
@@ -187,6 +187,57 @@ describe("findByStatus", () => {
     ];
 
     const current = findByStatus(mockStore, param);
+describe('find-by-id', () => {
+  it('should list the todo if found it by id', () => {
+    const mockStore = createMockStore([
+      { id: 1, title: 'Todo 1', done: false }
+    ])
+    const expected = 
+      { id: 1, title: 'Todo 1', done: false }
+    ;
+
+    const current = findById(mockStore, 1);
+
+    expect(current).toStrictEqual(expected);
+  })
+
+  it('should return undefined if todo list is empty', () => {
+    const mockStore = createMockStore([])
+    const expected = undefined;
+
+    const current = findById(mockStore, 1);
+
+    expect(current).toStrictEqual(expected);
+  })
+})
+
+describe('find-by-title', () => {
+  it('should list the todos if found it by title', () => {
+    const mockStore = createMockStore([
+      { id: 1, title: 'Todo 1', done: false },
+      { id: 2, title: 'Todo 2', done: false },
+    ])
+    const expected = [
+      { id: 1, title: 'Todo 1', done: false },
+      { id: 2, title: 'Todo 2', done: false },
+    ]
+      
+    ;
+
+    const current = findByTitle(mockStore, ['Todo']);
+
+    expect(current).toStrictEqual(expected);
+  })
+
+  it('should return empty array if todo list is empty', () => {
+    const mockStore = createMockStore([])
+    const expected = [];
+
+    const current = findByTitle(mockStore, ['Todo']);
+
+    expect(current).toStrictEqual(expected);
+  })
+})
 
     expect(current).toStrictEqual(expected);
   });
