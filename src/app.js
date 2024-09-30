@@ -1,8 +1,8 @@
-import { list, formatList, format, add, complete, findById, findByTitle } from "./todo.js";
+import { list, formatList, format, add, complete, findById, findByTitle, updateTitle } from "./todo.js";
 import { display } from "./display.js";
 import { AppError } from "./app-error.js";
 
-import { validateAddParams, validatedIdParam, validateCompleteParams, validateFindByIdParams, validateFindByTitleParams } from "./validate.js";
+import { validateAddParams, validatedIdParams, validateFindByIdParams, validateFindByTitleParams, validateUpdateTitleParams } from "./validate.js";
 
 export function createApp(todoStore, args) {
   const [, , command, ...params] = args;
@@ -21,7 +21,7 @@ export function createApp(todoStore, args) {
       break;
 
     case "complete":
-      validated = validatedIdParam(params);
+      validated = validatedIdParams(params);
       const completed = complete(todoStore, validated);
       display(["Todo set to completed:", format(completed)]);
       break;
@@ -40,9 +40,15 @@ export function createApp(todoStore, args) {
       break;
 
     case "find-by-title":
-      validated = validateFindByTitleParams(params);
+      validated = validateFindByTitleParams(todoStore ,params);
       const findTitle = findByTitle(todoStore, validated);
       display(["The searched todos based on title:", ...formatList(findTitle)]);
+      break;
+
+    case "update-title":
+      validated = validateUpdateTitleParams(todoStore, params);
+      const updatedTitle = updateTitle(todoStore, validated);
+      display(["The changed todo based on ID:", format(updatedTitle)]);
       break;
 
     default:

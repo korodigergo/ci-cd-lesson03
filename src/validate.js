@@ -26,12 +26,13 @@ export function validatedIdParams(todoStore, params) {
 }
 
 export function validateFindByIdParams(store, params) {
+  
   if(params.length !== 1) {
     throw new AppError('Give an ID, which is a numeric value.');
   }
   const [id] = params;
   const todoList = store.get();
-  const foundTodos = todoList.filter((todo) => todo.id === id)
+  const foundTodos = todoList.filter((todo) => todo.id === +id)
   if(foundTodos.length === 0){
     throw new AppError('No todo found with that ID.');
   }
@@ -52,6 +53,7 @@ export function validateStatusParams(params) {
   return title;
 }
 export function validateFindByTitleParams(store, params) {
+  console.log(params)
   if(params.length !== 1) {
     throw new AppError('Give a title, and no more parameters.');
   }
@@ -63,6 +65,23 @@ export function validateFindByTitleParams(store, params) {
   const foundTodos = todoList.filter((todo) => todo.title.toLowerCase().includes(title.toLowerCase()))
   if(foundTodos.length === 0){
     throw new AppError('No todo found with that title.');
+  }
+  return params;
+}
+
+export function validateUpdateTitleParams(store, params) {
+  console.log(params)
+  if(params.length !== 2) {
+    throw new AppError('Give two parameters, an ID, and a title.');
+  }
+  const [title, id] = params;
+  const todoList = store.get();
+  if(isNaN(id) || title.length < 1 || typeof title !== 'string'){
+    throw new AppError('ID should be a numberic value and the new title should be longer than 1 character and type of string.');
+  }
+  const foundTodos = todoList.filter((todo) => todo.id === +id)
+  if(foundTodos.length === 0){
+    throw new AppError('No todo found with that ID.');
   }
   return params;
 }

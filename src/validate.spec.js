@@ -1,4 +1,4 @@
-import { validateAddParams, validateFindByIdParams, validateFindByTitleParams, validatedIdParams, validateStatusParams } from "./validate";
+import { validateAddParams, validateFindByIdParams, validateFindByTitleParams, validatedIdParams, validateStatusParams, validateUpdateTitleParams } from "./validate.js";
 import { jest } from '@jest/globals';
 
 function createMockStore(data) {
@@ -251,5 +251,49 @@ describe('validateFindByTitleParams', () => {
     ]);
     expect(() => validateFindByTitleParams(mockStore, params))
       .toThrow('No todo found with that title.');
+  })
+})
+
+describe('validateUpdateTitleParams', () => {
+  it('should pass and return with the original params with title and id', () => {
+    const params = ['eating', '1'];
+    const expected = ['eating', '1'];
+    const mockStore = createMockStore([
+      { title: 'eat', id: 1, done: true },
+      { title: 'eating', id: 2, done: false }
+    ]);
+    const current = validateUpdateTitleParams(mockStore, params);
+
+    expect(current).toStrictEqual(expected);
+  })
+
+  it('should throw when more not exactly 2 paramteres given', () => {
+    const params = ['eat', '1', '2'];
+    const mockStore = createMockStore([
+      { title: 'todo title', id: 1, done: true },
+      { title: 'todo title 2', id: 2, done: false }
+    ]);
+    expect(() => validateUpdateTitleParams(mockStore, params))
+      .toThrow('Give two parameters, an ID, and a title.');
+  })
+
+  it('should throw when no todo found with the given ID', () => {
+    const params = ["eat", '1000'];
+    const mockStore = createMockStore([
+      { title: 'todo title', id: 1, done: true },
+      { title: 'todo title 2', id: 2, done: false }
+    ]);
+    expect(() => validateUpdateTitleParams(mockStore, params))
+      .toThrow('No todo found with that ID.');
+  })
+
+  it('should throw when given title shorter than 1 character', () => {
+    const params = ["", '1'];
+    const mockStore = createMockStore([
+      { title: 'todo title', id: 1, done: true },
+      { title: 'todo title 2', id: 2, done: false }
+    ]);
+    expect(() => validateUpdateTitleParams(mockStore, params))
+      .toThrow('ID should be a numberic value and the new title should be longer than 1 character and type of string.');
   })
 })
