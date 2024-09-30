@@ -58,3 +58,15 @@ export function findById(store, params){
     }
   }
 }
+
+export function findByTitle(store, params){
+  const foundTodos = [];
+  const [title] = params;
+  const todos = store.get()
+  for(const todo of todos){
+    if(todo.title.toLowerCase().includes(title.toLowerCase()) ){
+      foundTodos.push(todo);
+    }
+  }
+  return foundTodos;
+}
