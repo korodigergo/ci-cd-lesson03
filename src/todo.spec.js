@@ -8,6 +8,7 @@ import {
   list,
   complete,
   findByStatus,
+  updateTitle,
 } from "./todo.js";
 
 function createMockStore(data) {
@@ -197,53 +198,52 @@ describe("findByStatus", () => {
   });
 });
 
-  describe("find-by-id", () => {
-    it("should list the todo if found it by id", () => {
-      const mockStore = createMockStore([
-        { id: 1, title: "Todo 1", done: false },
-      ]);
-      const expected = { id: 1, title: "Todo 1", done: false };
-      const current = findById(mockStore, 1);
+describe("find-by-id", () => {
+  it("should list the todo if found it by id", () => {
+    const mockStore = createMockStore([
+      { id: 1, title: "Todo 1", done: false },
+    ]);
+    const expected = { id: 1, title: "Todo 1", done: false };
+    const current = findById(mockStore, 1);
 
-      expect(current).toStrictEqual(expected);
-    });
-
-    it("should return undefined if todo list is empty", () => {
-      const mockStore = createMockStore([]);
-      const expected = undefined;
-
-      const current = findById(mockStore, 1);
-
-      expect(current).toStrictEqual(expected);
-    });
+    expect(current).toStrictEqual(expected);
   });
 
-  describe("find-by-title", () => {
-    it("should list the todos if found it by title", () => {
-      const mockStore = createMockStore([
-        { id: 1, title: "Todo 1", done: false },
-        { id: 2, title: "Todo 2", done: false },
-      ]);
-      const expected = [
-        { id: 1, title: "Todo 1", done: false },
-        { id: 2, title: "Todo 2", done: false },
-      ];
+  it("should return undefined if todo list is empty", () => {
+    const mockStore = createMockStore([]);
+    const expected = undefined;
 
-      const current = findByTitle(mockStore, ["Todo"]);
+    const current = findById(mockStore, 1);
 
-      expect(current).toStrictEqual(expected);
-    });
+    expect(current).toStrictEqual(expected);
+  });
+});
 
-    it("should return empty array if todo list is empty", () => {
-      const mockStore = createMockStore([]);
-      const expected = [];
+describe("find-by-title", () => {
+  it("should list the todos if found it by title", () => {
+    const mockStore = createMockStore([
+      { id: 1, title: "Todo 1", done: false },
+      { id: 2, title: "Todo 2", done: false },
+    ]);
+    const expected = [
+      { id: 1, title: "Todo 1", done: false },
+      { id: 2, title: "Todo 2", done: false },
+    ];
 
-      const current = findByTitle(mockStore, ["Todo"]);
+    const current = findByTitle(mockStore, ["Todo"]);
 
-      expect(current).toStrictEqual(expected);
-    });
+    expect(current).toStrictEqual(expected);
   });
 
+  it("should return empty array if todo list is empty", () => {
+    const mockStore = createMockStore([]);
+    const expected = [];
+
+    const current = findByTitle(mockStore, ["Todo"]);
+
+    expect(current).toStrictEqual(expected);
+  });
+});
 
 it("should find a existing todo with not-done status (false)", () => {
   const param = "not-done";
@@ -288,4 +288,37 @@ it("should throw when param is not valid", () => {
   expect(() => findByStatus(mockStore, params)).toThrow(
     `This is not a valid param: "do". Try to use "done" or "not-done".`
   );
+});
+
+
+describe("update-title", () => {
+  it("should list the changed todo if found it by ID", () => {
+    const mockStore = createMockStore([
+      { id: 1, title: "Todo 1", done: false },
+      { id: 2, title: "Todo 2", done: false },
+    ]);
+    const expected = { id: 1, title: "newName", done: false };
+
+    const current = updateTitle(mockStore, ["newName", '1']);
+
+    expect(current).toStrictEqual(expected);
+  });
+
+  it("should return empty array if todo list is empty", () => {
+    const mockStore = createMockStore([]);
+    const expected = undefined;
+
+    const current = updateTitle(mockStore, ["Todo", '1']);
+
+    expect(current).toStrictEqual(expected);
+  });
+  
+  it("should return empty array if todo list is empty", () => {
+    const mockStore = createMockStore([]);
+    const expected = undefined;
+
+    const current = updateTitle(mockStore, ["Todo", '1']);
+
+    expect(current).toStrictEqual(expected);
+  });
 });

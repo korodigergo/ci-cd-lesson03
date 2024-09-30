@@ -1,6 +1,7 @@
-import { AppError } from "./app-error";
+import { AppError } from "./app-error.js";
 
 export function format(todo) {
+  console.log(todo)
   return `${todo.id} - [${todo.done ? 'x': ' '}] ${todo.title}`;
 }
 
@@ -85,4 +86,17 @@ export function findByTitle(store, params){
     }
   }
   return foundTodos;
+}
+
+export function updateTitle(store, params){
+  const [title, id] = params;
+  const todos = store.get()
+  for(const todo of todos){
+    if(todo.id === +id ){
+      todo.title = title;
+      store.set(todos)
+      console.log('updated Todos:' + todos)
+      return todo
+    }
+  }
 }
