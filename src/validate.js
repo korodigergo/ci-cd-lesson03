@@ -11,12 +11,30 @@ export function validateAddParams(params) {
   return params;
 }
 
-export function validateCompleteParams(params){
-  if(isNaN(+params)) {
-    throw new AppError('Give a thing is NaN.');
+export function validatedIdParams(todoStore, params) {
+  if (isNaN(params)) {
+    throw new AppError("Given parameter is not a number.");
   }
-  if(+params <= 0) {
-    throw new AppError('Give a number needs to be biger than 0.');
+  if (params <= 0) {
+    throw new AppError("Parameter should be bigger than 0.");
+  }
+  const listOfIds = todoStore.get().map((todo) => +todo.id);
+  if (!listOfIds.includes(params)) {
+    throw new AppError("Given number is not a valid Id.");
   }
   return params;
+}
+
+export function validateStatusParams(params) {
+  const [title] = params;
+  if (params.length <= 0) {
+    throw new AppError("Give a status.");
+  }
+  if (params.length !== 1) {
+    throw new AppError("Give only one status. Do not use space.");
+  }
+  if (title !== "done" && title !== "not-done") {
+    throw new AppError(`This is not a valid param: "${title}". Try to use "done" or "not-done".`);
+  }
+  return title;
 }

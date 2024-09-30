@@ -1,7 +1,7 @@
 import { list, formatList, format, add, complete } from "./todo.js";
 import { display } from "./display.js";
 import { AppError } from "./app-error.js";
-import { validateAddParams, validateCompleteParams } from "./validate.js";
+import { validateAddParams, validatedIdParam} from "./validate.js";
 
 export function createApp(todoStore, args) {
   const [, , command, ...params] = args;
@@ -20,9 +20,16 @@ export function createApp(todoStore, args) {
       break;
 
     case "complete":
-      validated = validateCompleteParams(params);
+      validated = validatedIdParam(params);
       const completed = complete(todoStore, validated);
       display(["Todo set to completed:", format(completed)]);
+      break;
+    case "find-by-status":
+      const foundByStatus = findByStatus(
+        todoStore,
+        validateStatusParam(params)
+      );
+      display(["Found Todo:", ...formatList(foundByStatus)]);
       break;
 
     default:

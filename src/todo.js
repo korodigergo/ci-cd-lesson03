@@ -1,3 +1,5 @@
+import { AppError } from "./app-error";
+
 export function format(todo) {
   return `${todo.id} - [${todo.done ? 'x': ' '}] ${todo.title}`;
 }
@@ -47,4 +49,18 @@ export function complete(store, params){
 
   store.set(todos)
   return changedTodo;
+}
+
+export function findByStatus(store, param) {
+  const todos = store.get();
+  if (param === "done") {
+    return todos.filter((todo) => todo.done === true);
+  }
+  if (param === "not-done") {
+    return todos.filter((todo) => todo.done === false);
+  } else {
+    throw new AppError(
+      `This is not a valid param: "${param}". Try to use "done" or "not-done".`
+    );
+  }
 }
