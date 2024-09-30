@@ -22,6 +22,7 @@ export function validatedIdParams(todoStore, params) {
   if (!listOfIds.includes(params)) {
     throw new AppError("Given number is not a valid Id.");
   }
+  return params;
 }
 
 export function validateFindByIdParams(store, params) {

@@ -1,5 +1,14 @@
-import { jest } from '@jest/globals';
-import { add, findById, findByTitle, format, formatList, list, complete, findByStatus } from './todo.js';
+import { jest } from "@jest/globals";
+import {
+  add,
+  findById,
+  findByTitle,
+  format,
+  formatList,
+  list,
+  complete,
+  findByStatus,
+} from "./todo.js";
 
 function createMockStore(data) {
   return {
@@ -120,9 +129,9 @@ describe("add", () => {
       done: false,
       title: "New Todo",
     };
-    
+
     const current = add(mockStore, params);
-    
+
     expect(current).toStrictEqual(expected);
     expect(mockStore.set.mock.calls[0][0]).toStrictEqual([...stored, expected]);
   });
@@ -131,18 +140,16 @@ describe("add", () => {
 describe("complete", () => {
   it("should update a todo done field to true", () => {
     const params = ["1"];
-    const stored = [
-      { id: 1, title: "Todo 1", done: false },
-    ];
+    const stored = [{ id: 1, title: "Todo 1", done: false }];
     const mockStore = createMockStore(stored);
     const expected = {
       id: 1,
       done: true,
       title: "Todo 1",
     };
-    
+
     const current = complete(mockStore, params);
-    
+
     expect(current).toStrictEqual(expected);
     expect(current.done).toStrictEqual(expected.done);
   });
@@ -187,103 +194,98 @@ describe("findByStatus", () => {
     ];
 
     const current = findByStatus(mockStore, param);
-describe('find-by-id', () => {
-  it('should list the todo if found it by id', () => {
-    const mockStore = createMockStore([
-      { id: 1, title: 'Todo 1', done: false }
-    ])
-    const expected = 
-      { id: 1, title: 'Todo 1', done: false }
-    ;
-
-    const current = findById(mockStore, 1);
-
-    expect(current).toStrictEqual(expected);
-  })
-
-  it('should return undefined if todo list is empty', () => {
-    const mockStore = createMockStore([])
-    const expected = undefined;
-
-    const current = findById(mockStore, 1);
-
-    expect(current).toStrictEqual(expected);
-  })
-})
-
-describe('find-by-title', () => {
-  it('should list the todos if found it by title', () => {
-    const mockStore = createMockStore([
-      { id: 1, title: 'Todo 1', done: false },
-      { id: 2, title: 'Todo 2', done: false },
-    ])
-    const expected = [
-      { id: 1, title: 'Todo 1', done: false },
-      { id: 2, title: 'Todo 2', done: false },
-    ]
-      
-    ;
-
-    const current = findByTitle(mockStore, ['Todo']);
-
-    expect(current).toStrictEqual(expected);
-  })
-
-  it('should return empty array if todo list is empty', () => {
-    const mockStore = createMockStore([])
-    const expected = [];
-
-    const current = findByTitle(mockStore, ['Todo']);
-
-    expect(current).toStrictEqual(expected);
-  })
-})
-
-    expect(current).toStrictEqual(expected);
   });
-  it("should find a existing todo with not-done status (false)", () => {
-    const param = "not-done";
-    const mockStore = createMockStore([
-      {
-        id: 1,
-        done: false,
-        title: "New Todo",
-        labels: [],
-      },
-      {
-        id: 2,
-        done: true,
-        title: "Todo",
-        labels: [],
-      },
-      {
-        id: 3,
-        done: true,
-        title: "new",
-        labels: [],
-      },
-    ]);
-    const expected = [
-      {
-        id: 1,
-        done: false,
-        title: "New Todo",
-        labels: [],
-      },
-    ];
+});
 
-    const current = findByStatus(mockStore, param);
+  describe("find-by-id", () => {
+    it("should list the todo if found it by id", () => {
+      const mockStore = createMockStore([
+        { id: 1, title: "Todo 1", done: false },
+      ]);
+      const expected = { id: 1, title: "Todo 1", done: false };
+      const current = findById(mockStore, 1);
 
-    expect(current).toStrictEqual(expected);
+      expect(current).toStrictEqual(expected);
+    });
+
+    it("should return undefined if todo list is empty", () => {
+      const mockStore = createMockStore([]);
+      const expected = undefined;
+
+      const current = findById(mockStore, 1);
+
+      expect(current).toStrictEqual(expected);
+    });
   });
 
-  it("should throw when param is not valid", () => {
-    const params = "do";
-    const mockStore = createMockStore([]);
+  describe("find-by-title", () => {
+    it("should list the todos if found it by title", () => {
+      const mockStore = createMockStore([
+        { id: 1, title: "Todo 1", done: false },
+        { id: 2, title: "Todo 2", done: false },
+      ]);
+      const expected = [
+        { id: 1, title: "Todo 1", done: false },
+        { id: 2, title: "Todo 2", done: false },
+      ];
 
-    expect(()=>findByStatus(mockStore, params))
-    .toThrow(
-      `This is not a valid param: "do". Try to use "done" or "not-done".`
-    );
+      const current = findByTitle(mockStore, ["Todo"]);
+
+      expect(current).toStrictEqual(expected);
+    });
+
+    it("should return empty array if todo list is empty", () => {
+      const mockStore = createMockStore([]);
+      const expected = [];
+
+      const current = findByTitle(mockStore, ["Todo"]);
+
+      expect(current).toStrictEqual(expected);
+    });
   });
+
+
+it("should find a existing todo with not-done status (false)", () => {
+  const param = "not-done";
+  const mockStore = createMockStore([
+    {
+      id: 1,
+      done: false,
+      title: "New Todo",
+      labels: [],
+    },
+    {
+      id: 2,
+      done: true,
+      title: "Todo",
+      labels: [],
+    },
+    {
+      id: 3,
+      done: true,
+      title: "new",
+      labels: [],
+    },
+  ]);
+  const expected = [
+    {
+      id: 1,
+      done: false,
+      title: "New Todo",
+      labels: [],
+    },
+  ];
+
+  const current = findByStatus(mockStore, param);
+
+  expect(current).toStrictEqual(expected);
+});
+
+it("should throw when param is not valid", () => {
+  const params = "do";
+  const mockStore = createMockStore([]);
+
+  expect(() => findByStatus(mockStore, params)).toThrow(
+    `This is not a valid param: "do". Try to use "done" or "not-done".`
+  );
 });

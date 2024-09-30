@@ -64,6 +64,7 @@ export function findByStatus(store, param) {
     );
   }
 } 
+
 export function findById(store, params){
   const id = +params;
   const todos = store.get()
