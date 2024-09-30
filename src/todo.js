@@ -48,3 +48,13 @@ export function complete(store, params){
   store.set(todos)
   return changedTodo;
 }
+
+export function findById(store, params){
+  const id = +params;
+  const todos = store.get()
+  for(const todo of todos){
+    if(todo.id === id){
+      return todo;
+    }
+  }
+}
